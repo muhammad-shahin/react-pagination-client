@@ -12,6 +12,7 @@ import { Link, useLoaderData } from 'react-router-dom';
 const Shop = () => {
   const { count } = useLoaderData();
   const [products, setProducts] = useState([]);
+  const [addedProducts, setAddedProducts] = useState([]);
   const [cart, setCart] = useState([]);
 
   const [productsPerPage, setProductsPerPage] = useState(10);
@@ -25,11 +26,14 @@ const Shop = () => {
     setCurrentPage(1);
   };
 
+  // get products for pagination
   useEffect(() => {
-    fetch('http://localhost:5000/products')
+    fetch(
+      `http://localhost:5000/products?page=${currentPage}&size=${productsPerPage}`
+    )
       .then((res) => res.json())
       .then((data) => setProducts(data));
-  }, []);
+  }, [currentPage, productsPerPage]);
 
   useEffect(() => {
     const storedCart = getShoppingCart();
